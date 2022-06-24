@@ -8,14 +8,12 @@ packages:
 hostname: nasa
 timezone: Europe/Paris
 
-# services
+  # services
 portainer_enabled: true
 traefik_enabled: true
-#filebrowser_enabled: true
+  #filebrowser_enabled: true
 uptime_kuma_enabled: true
-radarr_enabled: true
-sonarr_enabled: true
-sonarra_enabled: true
+
 watchtower_enabled: true
 
 minecraft_available_externally: 'true'
@@ -62,127 +60,53 @@ books_root: '{{ samba_shares_root }}/books'
 audiobooks_root: '{{ samba_shares_root }}/audiobooks'
 comics_root: '{{ samba_shares_root }}/comics'
 photos_root: '{{ samba_shares_root }}/photos'
-samba_server_string: SMB Server
 samba_shares:
   - name: downloads
-    comment: 'Stuff downloaded'
-    guest_ok: yes
-    public: yes
-    writable: yes
-    browseable: yes
     path: '{{ downloads_root }}'
 
   - name: documents
-    comment: 'Documents'
-    guest_ok: yes
-    public: yes
-    writable: yes
-    browseable: yes
     path: '{{ documents_root }}'
 
   - name: movies
-    comment: 'Movies'
-    guest_ok: yes
-    public: yes
-    writable: yes
-    browseable: yes
     path: '{{ movies_root }}'
 
   - name: tv
-    comment: 'TV Episodes'
-    guest_ok: yes
-    public: yes
-    writable: yes
-    browseable: yes
     path: '{{ tv_root }}'
 
   - name: anime
-    comment: 'Anime Episodes'
-    guest_ok: yes
-    public: yes
-    writable: yes
-    browseable: yes
     path: '{{ anime_root }}'
 
   - name: music
-    comment: 'Music'
-    guest_ok: yes
-    public: yes
-    writable: yes
-    browseable: yes
     path: '{{ music_root }}'
 
   - name: podcasts
-    comment: 'Podcasts'
-    guest_ok: yes
-    public: yes
-    writable: yes
-    browseable: yes
     path: '{{ podcasts_root }}'
 
   - name: dump
-    comment: 'File dump'
-    guest_ok: yes
-    public: yes
-    writable: yes
-    browseable: yes
     path: '{{  samba_shares_root  }}/dump'
 
   - name: games
-    comment: 'Games'
-    guest_ok: yes
-    public: yes
-    writable: yes
-    browseable: yes
     path: '{{ samba_shares_root }}/games'
 
   - name: photos
-    comment: 'Pictures'
-    guest_ok: yes
-    public: yes
-    writable: yes
-    browseable: yes
     path: '{{ photos_root }}'
 
   - name: books
-    comment: 'Books'
-    guest_ok: yes
-    public: yes
-    writable: yes
-    browseable: yes
     path: '{{ books_root }}'
 
   - name: audiobooks
-    comment: 'Audiobooks'
-    guest_ok: yes
-    public: yes
-    writable: yes
-    browsable: yes
     path: '{{ samba_shares_root }}/audiobooks'
 
   - name: comics
-    comment: 'Comics'
-    guest_ok: yes
-    public: yes
-    writable: yes
-    browseable: yes
     path: '{{ comics_root }}'
 
-  # - name: coptic
-  #   comment: 'Coptic'
-  #   guest_ok: yes
-  #   public: yes
-  #   writable: yes
-  #   browseable: yes
-  #   path: '{{ coptic_root }}'
+      # - name: coptic
+      #   comment: 'Coptic'
+      #   guest_ok: yes
+      #   public: yes
+      #   writable: yes
+      #   browseable: yes
+      #   path: '{{ coptic_root }}'
 
-# Seems to break browsing of the \\server-name shares root when enabled
-samba_mitigate_cve_2017_7494: false
-samba_apple_extensions: yes
-samba_guest_account: nasa
-samba_map_to_guest: Bad Password
-
-# The NetBIOS hostname used by Samba on your network
-samba_netbios_name: '{{ hostname }}'
-
+traefik_ipwhitelist: '127.0.0.1/32, 192.168.1.7'
 openvpn_provider: 'NORDVPN'
