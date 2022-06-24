@@ -1,0 +1,39 @@
+---
+- name: Create filebrowser Directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ filebrowser_data_directory }}'
+
+- name: Create filebrowser file
+  file:
+    path: '{{ filebrowser_data_directory }}/database.db'
+    state: touch
+
+- name: 'Permission share data'
+  file:
+    path: '{{ filebrowser_data_directory }}/database.db'
+    owner: '{{ personal_user_id }}'
+    group: '{{ group_id }}'
+    mode: 775
+
+- name: filebrowser
+  docker_container:
+    name: filebrowser
+    image: filebrowser/filebrowser:alpine
+    user: '{{ personal_user_id }}:{{ group_id }}'
+    volumes:
+      - '{{ root_directory }}:/srv:rw'
+      - '{{ filebrowser_data_directory }}/database.db:/database.db:rw'
+
+    ports:
+      - '{{ filebrowser_port }}:80'
+    restart_policy: unless-stopped
+    labels:
+      traefik.enable: '{{ filebrowser_available_externally }}'
+      traefik.http.routers.filebrowser.rule: 'Host(`{{ filebrowser_hostname }}.{{ domain }}`)'
+      traefik.http.routers.filebrowser.tls.certresolver: 'letsencrypt'
+      traefik.http.routers.filebrowser.tls.domains[0].main: '{{ domain }}'
+      traefik.http.routers.filebrowser.tls.domains[0].sans: '*.{{ domain }}'
+      traefik.http.services.filebrowser.loadbalancer.server.port: '80'

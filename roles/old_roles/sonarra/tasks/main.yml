@@ -1,0 +1,30 @@
+---
+- name: Create Sonarra Directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ sonarra_data_directory }}'
+
+- name: Sonarra
+  docker_container:
+    name: sonarra
+    image: hotio/sonarr
+    pull: true
+    volumes:
+      - '{{ samba_shares_root }}:/public:rw'
+      - '{{ sonarra_data_directory }}:/config:rw'
+    ports:
+      - '{{ sonarra_port }}:8989'
+    env:
+      TZ: '{{ timezone }}'
+      PUID: '{{ sonarra_user_id }}'
+      PGID: '{{ sonarra_group_id }}'
+    restart_policy: unless-stopped
+    labels:
+      traefik.enable: '{{ sonarra_available_externally }}'
+      traefik.http.routers.sonarra.rule: 'Host(`{{ sonarra_hostname }}.{{ domain }}`)'
+      traefik.http.routers.sonarra.tls.certresolver: 'letsencrypt'
+      traefik.http.routers.sonarra.tls.domains[0].main: '{{ domain }}'
+      traefik.http.routers.sonarra.tls.domains[0].sans: '*.{{ domain }}'
+      traefik.http.services.sonarra.loadbalancer.server.port: '8989'

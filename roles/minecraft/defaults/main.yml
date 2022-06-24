@@ -1,0 +1,13 @@
+---
+minecraft_enabled: false
+minecraft_available_externally: 'false'
+
+# directories
+minecraft_data_directory: '{{ docker_home }}/minecraft'
+
+# network
+minecraft_port: '25565'
+minecraft_hostname: 'minecraft'
+
+# specs
+minecraft_memory: '4G'

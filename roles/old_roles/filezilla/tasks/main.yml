@@ -1,0 +1,29 @@
+---
+- name: Create filezilla Directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ filezilla_data_directory }}/data'
+
+- name: filezilla Docker Container
+  docker_container:
+    name: filezilla
+    image: jlesage/filezilla:latest
+    pull: true
+    volumes:
+      - '{{ filezilla_data_directory }}/data:/config:rw'
+      - '{{ filezilla_storage_directory }}:/storage:rw'
+    ports:
+      - '{{ filezilla_port }}:5800'
+    env:
+      USER_ID: '{{ filezilla_nas_user_id }}'
+      GROUP_ID: '{{ filezillae_nas_group_id }}'
+    restart_policy: unless-stopped
+    labels:
+      traefik.enable: '{{ filezilla_available_externally }}'
+      traefik.http.routers.filezilla.rule: 'Host(`{{ filezilla_hostname }}.{{ domain }}`)'
+      traefik.http.routers.filezilla.tls.certresolver: 'letsencrypt'
+      traefik.http.routers.filezilla.tls.domains[0].main: '{{ domain }}'
+      traefik.http.routers.filezilla.tls.domains[0].sans: '*.{{ domain }}'
+      traefik.http.services.filezilla.loadbalancer.server.port: '5800'

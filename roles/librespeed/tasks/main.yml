@@ -1,0 +1,30 @@
+---
+- name: Create librespeed Directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ librespeed_config_directory }}'
+
+- name: librespeed Docker Container
+  docker_container:
+    name: librespeed
+    image: lscr.io/linuxserver/librespeed
+    pull: true
+    env:
+      TZ: '{{ timezone }}'
+      PUID: '{{ librespeed_user_id }}'
+      PGID: '{{ librespeed_group_id }}'
+      PASSWORD: '{{ librespeed_password }}'
+    volumes:
+      - '{{ librespeed_config_directory }}:/config:rw'
+    ports:
+      - '{{ librespeed_port_http }}:80'
+    restart_policy: unless-stopped
+    labels:
+      traefik.enable: '{{ librespeed_available_externally }}'
+      traefik.http.routers.librespeed.rule: 'Host(`{{ librespeed_hostname }}.{{ domain }}`)'
+      traefik.http.routers.librespeed.tls.certresolver: 'letsencrypt'
+      traefik.http.routers.librespeed.tls.domains[0].main: '{{ domain }}'
+      traefik.http.routers.librespeed.tls.domains[0].sans: '*.{{ domain }}'
+      traefik.http.services.librespeed.loadbalancer.server.port: '80'

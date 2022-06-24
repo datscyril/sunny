@@ -1,0 +1,41 @@
+---
+- name: Create minecraft Directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ minecraft_data_directory }}/data'
+
+- name: minecraft Docker Container
+  docker_container:
+    name: minecraft
+    image: itzg/minecraft-server:latest
+    pull: true
+    env:
+      EULA: 'TRUE'
+      TYPE: 'PAPER'
+      SPIGET_RESOURCES: '67436,13932,32748,60088,59773'
+      SERVER_NAME: 'Unicorn Society'
+      DIFFICULTY: 'hard'
+      ICON: 'https://i.pinimg.com/736x/bb/e1/1b/bbe11bd7ac79bab15b4a1d56f9203218.jpg'
+      MAX_BUILD_HEIGHT: '256'
+      SPAWN_ANIMALS: 'true'
+      SPAWN_MONSTERS: 'true'
+      SPAWN_NPCS: 'true'
+      SPAWN_PROTECTION: '0'
+      MEMORY: '{{ minecraft_memory }}'
+      VIEW_DISTANCE: '10'
+      OPS: 'Djimo'
+      TZ: 'Europe/Paris'
+    volumes:
+      - '{{ minecraft_data_directory }}/data:/data:rw'
+    ports:
+      - '{{ minecraft_port }}:25565'
+    restart_policy: unless-stopped
+    labels:
+      traefik.enable: '{{ minecraft_available_externally }}'
+      traefik.http.routers.minecraft.rule: 'Host(`{{ minecraft_hostname }}.{{ domain }}`)'
+      traefik.http.routers.minecraft.tls.certresolver: 'letsencrypt'
+      traefik.http.routers.minecraft.tls.domains[0].main: '{{ domain }}'
+      traefik.http.routers.minecraft.tls.domains[0].sans: '*.{{ domain }}'
+      traefik.http.services.minecraft.loadbalancer.server.port: '25565'

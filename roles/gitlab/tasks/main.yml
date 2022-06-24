@@ -1,0 +1,39 @@
+---
+# The gitlab uid/gid matches 'git:git' in the Gitlab Docker image.
+
+- name: Create Gitlab Directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ gitlab_data_directory }}/config'
+    - '{{ gitlab_data_directory }}/log'
+    - '{{ gitlab_data_directory }}/data'
+
+- name: Create Gitlab Docker Container
+  docker_container:
+    name: gitlab
+    image: gitlab/gitlab-ce:latest
+    pull: true
+    volumes:
+      - '{{ gitlab_data_directory }}/config:/etc/gitlab:rw'
+      - '{{ gitlab_data_directory }}/log:/var/log/gitlab:rw'
+      - '{{ gitlab_data_directory }}/data:/var/opt/gitlab:rw'
+    network_mode: 'bridge'
+    ports:
+      - '{{ gitlab_port_http }}:80'
+      - '{{ gitlab_port_https }}:443'
+      - '{{ gitlab_port_ssh }}:22'
+    env:
+      TZ: '{{ timezone }}'
+      PUID: '{{ gitlab_user_id }}'
+      PGID: '{{ gitlab_group_id }}'
+    restart_policy: unless-stopped
+    hostname: '{{ gitlab_hostname }}.{{ domain }}'
+    labels:
+      traefik.enable: '{{ gitlab_available_externally }}'
+      traefik.http.routers.gitlab.rule: 'Host(`{{ gitlab_hostname }}.{{ domain }}`)'
+      traefik.http.routers.gitlab.tls.certresolver: 'letsencrypt'
+      traefik.http.routers.gitlab.tls.domains[0].main: '{{ domain }}'
+      traefik.http.routers.gitlab.tls.domains[0].sans: '*.{{ domain }}'
+      traefik.http.services.gitlab.loadbalancer.server.port: '80'

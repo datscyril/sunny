@@ -1,0 +1,8 @@
+---
+uptime_kuma_available_externally: 'false'
+uptime_kuma_hostname: 'uptime'
+uptime_kuma_config_directory: '{{ docker_home }}/uptime_kuma/config'
+uptime_kuma_user_id: '{{ user_id }}'
+uptime_kuma_group_id: '{{ group_id }}'
+
+uptime_kuma_port_http: '4646'

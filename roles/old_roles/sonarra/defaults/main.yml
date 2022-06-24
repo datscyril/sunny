@@ -1,0 +1,16 @@
+---
+sonarra_enabled: false
+sonarra_available_externally: 'false'
+
+# directories
+sonarra_data_directory: '{{ docker_home }}/sonarra/config'
+sonarra_anime_directory: '{{ anime_root }}'
+sonarra_download_directory: '{{ downloads_root }}'
+
+# uid / gid
+sonarra_user_id: '{{ user_id }}'
+sonarra_group_id: '{{ group_id }}'
+
+# network
+sonarra_port: '8990'
+sonarra_hostname: 'sonarra'

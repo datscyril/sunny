@@ -1,0 +1,11 @@
+---
+flaresolverr_enabled: false
+flaresolverr_available_externally: 'false'
+
+flaresolverr_log_level: 'info'
+flaresolverr_log_html: 'false'
+flaresolverr_captcha: 'hcaptcha-solver'
+
+# network
+flaresolverr_port: '8191'
+flaresolverr_hostname: 'flaresolverr'

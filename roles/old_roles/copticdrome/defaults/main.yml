@@ -1,0 +1,10 @@
+---
+copticdrome_enabled: false
+copticdrome_available_externally: 'true'
+
+# directories
+copticdrome_data_directory: '{{ docker_home }}/copticdrome'
+copticdrome_music_directory: '{{ coptic_root }}/songs'
+# network
+copticdrome_port: '4534'
+copticdrome_hostname: 'coptic'

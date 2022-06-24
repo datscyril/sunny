@@ -1,0 +1,21 @@
+---
+- name: Create sftp Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ sftp_data_directory }}/data"
+
+- name: sftp Docker Container
+  docker_container:
+    name: sftp
+    image: atmoz/sftp:latest
+    pull: true
+    volumes:
+      #  - "{{ sftp_data_directory }}/data:/sftp/data:rw"
+      #  - "{{ sftp_data_directory }}/users.conf:/etc/sftp/users.conf:ro"
+      - "{{ sftp_guest_directory }}:/home/guest/public:ro"
+    ports:
+      - "{{ sftp_port }}:22"
+    restart_policy: unless-stopped
+    command: "{{ sftp_guest_user }}:{{ sftp_guest_password }}:1001"

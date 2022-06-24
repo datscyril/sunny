@@ -1,0 +1,12 @@
+---
+sftp_enabled: false
+sftp_available_externally: 'false'
+
+# directories
+sftp_data_directory: '{{ docker_home }}/sftp'
+
+sftp_guest_directory: '{{ samba_shares_root }}'
+sftp_guest_user: 'guest'
+sftp_guest_password: 'giveme100%ofyourmovies'
+# network
+sftp_port: '4242'

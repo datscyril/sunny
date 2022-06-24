@@ -1,0 +1,11 @@
+---
+filebrowser_enabled: false
+filebrowser_available_externally: 'false'
+
+filebrowser_data_directory: '{{ docker_home }}/filebrowser'
+
+filebrowser_user_id: '{{ user_id }}'
+filebrowser_group_id: '{{ group_id }}'
+
+filebrowser_port: '8084'
+filebrowser_hostname: 'files'

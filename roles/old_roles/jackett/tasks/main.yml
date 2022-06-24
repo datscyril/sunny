@@ -1,0 +1,29 @@
+---
+- name: Create Jackett Directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ jackett_data_directory }}'
+
+- name: jackett
+  docker_container:
+    name: jackett
+    image: hotio/jackett
+    volumes:
+      - '{{ jackett_data_directory }}:/config:rw'
+    ports:
+      - '{{ jackett_port }}:9117'
+    env:
+      TZ: '{{ timezone }}'
+      PUID: '{{ user_id }}'
+      PGID: '{{ group_id }}'
+      UMASK: '002'
+    restart_policy: unless-stopped
+    labels:
+      traefik.enable: '{{ jackett_available_externally }}'
+      traefik.http.routers.jackett.rule: 'Host(`{{ jackett_hostname }}.{{ domain }}`)'
+      traefik.http.routers.jackett.tls.certresolver: 'letsencrypt'
+      traefik.http.routers.jackett.tls.domains[0].main: '{{ domain }}'
+      traefik.http.routers.jackett.tls.domains[0].sans: '*.{{ domain }}'
+      traefik.http.services.jackett.loadbalancer.server.port: '9117'

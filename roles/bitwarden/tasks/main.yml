@@ -1,0 +1,38 @@
+---
+- name: Create Bitwarden Directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ bitwarden_data_directory }}'
+
+- name: Bitwarden Docker Container
+  docker_container:
+    name: bitwarden
+    image: vaultwarden/server:latest
+    pull: true
+    ports:
+      - '{{ bitwarden_port_a }}:80'
+    volumes:
+      - '{{ bitwarden_data_directory }}:/data:rw'
+    env:
+      SIGNUPS_ALLOWED: '{{ bitwarden_allow_signups }}'
+      ADMIN_TOKEN: '{{ bitwarden_admin_token }}'
+      LOG_FILE: '/data/bitwarden.log'
+      WEBSOCKET_ENABLED: 'true'
+    labels:
+      traefik.enable: '{{ bitwarden_available_externally }}'
+      traefik.http.routers.bitwarden.rule: 'Host(`{{ bitwarden_hostname }}.{{ domain }}`)'
+      traefik.http.routers.bitwarden.tls.certresolver: 'letsencrypt'
+      traefik.http.routers.bitwarden.tls.domains[0].main: '{{ domain }}'
+      traefik.http.routers.bitwarden.tls.domains[0].sans: '*.{{ domain }}'
+      traefik.http.services.bitwarden.loadbalancer.server.port: '80'
+    restart_policy: unless-stopped
+
+- name: Bitwarden Backup Container
+  docker_container:
+    name: bitwarden-backup
+    image: bruceforce/bw_backup:latest
+    pull: true
+    restart_policy: unless-stopped
+    volumes_from: bitwarden

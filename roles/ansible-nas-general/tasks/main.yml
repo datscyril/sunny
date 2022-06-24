@@ -1,0 +1,41 @@
+---
+- name: Set login banner
+  copy:
+    src: motd.txt
+    mode: 0644
+    dest: /etc/motd
+
+- name: Update apt-cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  register: result
+  until: result is succeeded
+
+- name: 'Set hostname to {{ hostname }}'
+  hostname:
+    name: '{{ hostname }}'
+
+- name: 'Set timezone to {{ timezone }}'
+  timezone:
+    name: '{{ timezone }}'
+
+- name: Create personal directory
+  file:
+    path: '{{ item }}'
+    state: directory
+    owner: '{{ personal_user }}'
+    group: '{{ personal_group }}'
+    mode: 'u=rwX,g=rwX,o=rX'
+  with_items:
+    - '{{ personal_directory }}'
+
+- name: 'Permission share directories'
+  file:
+    path: '{{ item.path }}'
+    state: directory
+    owner: '{{ user }}'
+    group: '{{ group }}'
+    mode: 'u=rwX,g=rwX,o=rX'
+    recurse: true
+  loop: '{{ samba_shares }}'

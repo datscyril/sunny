@@ -1,0 +1,30 @@
+---
+- name: Create heimdall Directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ heimdall_config_directory }}'
+
+- name: heimdall Docker Container
+  docker_container:
+    name: heimdall
+    image: lscr.io/linuxserver/heimdall
+    pull: true
+    env:
+      TZ: '{{ timezone }}'
+      PUID: '{{ heimdall_user_id }}'
+      PGID: '{{ heimdall_group_id }}'
+    volumes:
+      - '{{ heimdall_config_directory }}:/config:rw'
+    ports:
+      - '{{ heimdall_port_http }}:80'
+      - '{{ heimdall_port_https }}:443'
+    restart_policy: unless-stopped
+    labels:
+      traefik.enable: '{{ heimdall_available_externally }}'
+      traefik.http.routers.heimdall.rule: 'Host(`{{ heimdall_hostname }}.{{ domain }}`)'
+      traefik.http.routers.heimdall.tls.certresolver: 'letsencrypt'
+      traefik.http.routers.heimdall.tls.domains[0].main: '{{ domain }}'
+      traefik.http.routers.heimdall.tls.domains[0].sans: '*.{{ domain }}'
+      traefik.http.services.heimdall.loadbalancer.server.port: '80'

@@ -1,0 +1,84 @@
+---
+- hosts: all
+  become: yes
+
+  pre_tasks:
+    - import_tasks: tasks/users.yml
+      tags: users
+
+  roles:
+    - role: geerlingguy.docker
+    - role: geerlingguy.security
+
+    ###
+    ### Ansible-NAS Roles
+    ###
+    - role: ansible-nas-general
+      tags:
+        - ansible-nas-general
+
+    - role: ansible-nas-docker
+      tags:
+        - ansible-nas-docker
+    ###
+    ### Applications
+    ###
+
+    - role: bitwarden
+      tags:
+        - bitwarden
+      when: (bitwarden_enabled | default(False))
+
+    - role: filebrowser
+      tags:
+        - filebrowser
+      when: (filebrowser_enabled | default(False))
+
+    - role: gitlab
+      tags:
+        - gitlab
+      when: (gitlab_enabled | default(False))
+
+    - role: jellyfin
+      tags:
+        - jellyfin
+      when: (jellyfin_enabled | default(False))
+
+    - role: minecraft
+      tags:
+        - minecraft
+      when: (minecraft_enabled | default(False))
+
+    - role: navidrome
+      tags:
+        - navidrome
+      when: (navidrome_enabled | default(False))
+
+    - role: librespeed
+      tags:
+        - librespeed
+      when: (librespeed_enabled | default(False))
+
+    - role: portainer
+      tags:
+        - portainer
+      when: (portainer_enabled | default(False))
+
+    - role: sftp
+      tags:
+        - sftp
+      when: (sftp_enabled | default(False))
+
+    - role: traefik
+      tags:
+        - traefik
+      when: (traefik_enabled | default(False))
+    - role: uptime-kuma
+      tags:
+        - uptime_kuma
+      when: (uptime_kuma_enabled | default(False))
+
+    - role: watchtower
+      tags:
+        - watchtower
+      when: (watchtower_enabled | default(False))

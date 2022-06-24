@@ -1,0 +1,12 @@
+---
+navidrome_enabled: false
+navidrome_available_externally: 'false'
+
+# directories
+navidrome_data_directory: '{{ docker_home }}/navidrome'
+navidrome_music_directory: '{{ music_root }}'
+navidrome_podcasts_directory: '{{ podcasts_root }}'
+
+# network
+navidrome_port: '4533'
+navidrome_hostname: 'music'

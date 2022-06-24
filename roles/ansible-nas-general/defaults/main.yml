@@ -1,0 +1,19 @@
+---
+# Update all apt packages when playbook is run
+keep_packages_updated: true
+
+# Extra packages to install
+extra_packages:
+  - rsync
+  - ranger
+  - git
+  - neovim
+  - vim
+  - htop
+  - neofetch
+  - tmux
+  - speedtest-cli
+
+# Sets the timezone for your Ansible NAS
+# You can find a list here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: Europe/Paris

@@ -1,0 +1,30 @@
+---
+- name: Create templateservice Directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ templateservice_data_directory }}'
+
+- name: templateservice
+  docker_container:
+    name: templateservice
+    image: hotio/sonarr
+    pull: true
+    volumes:
+      - '{{ samba_shares_root }}:/public:rw'
+      - '{{ templateservice_data_directory }}:/config:rw'
+    ports:
+      - '{{ templateservice_port }}:8989'
+    env:
+      TZ: '{{ timezone }}'
+      PUID: '{{ templateservice_user_id }}'
+      PGID: '{{ templateservice_group_id }}'
+    restart_policy: unless-stopped
+    labels:
+      traefik.enable: '{{ templateservice_available_externally }}'
+      traefik.http.routers.templateservice.rule: 'Host(`{{ templateservice_hostname }}.{{ domain }}`)'
+      traefik.http.routers.templateservice.tls.certresolver: 'letsencrypt'
+      traefik.http.routers.templateservice.tls.domains[0].main: '{{ domain }}'
+      traefik.http.routers.templateservice.tls.domains[0].sans: '*.{{ domain }}'
+      traefik.http.services.templateservice.loadbalancer.server.port: '8989'

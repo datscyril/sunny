@@ -1,0 +1,27 @@
+---
+- name: Create navidrome Directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ navidrome_data_directory }}/data'
+    - '{{ navidrome_data_directory }}/playlists'
+
+- name: navidrome Docker Container
+  docker_container:
+    name: navidrome
+    image: deluan/navidrome:latest
+    pull: true
+    volumes:
+      - '{{ navidrome_data_directory }}/data:/data:rw'
+      - '{{ navidrome_music_directory }}:/music:rw'
+    ports:
+      - '{{ navidrome_port }}:4533'
+    restart_policy: unless-stopped
+    labels:
+      traefik.enable: '{{ navidrome_available_externally }}'
+      traefik.http.routers.navidrome.rule: 'Host(`{{ navidrome_hostname }}.{{ domain }}`)'
+      traefik.http.routers.navidrome.tls.certresolver: 'letsencrypt'
+      traefik.http.routers.navidrome.tls.domains[0].main: '{{ domain }}'
+      traefik.http.routers.navidrome.tls.domains[0].sans: '*.{{ domain }}'
+      traefik.http.services.navidrome.loadbalancer.server.port: '4533'

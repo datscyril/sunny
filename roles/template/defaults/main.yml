@@ -1,0 +1,14 @@
+---
+templateservice_enabled: false
+templateservice_available_externally: 'false'
+
+# directories
+templateservice_data_directory: '{{ docker_home }}/templateservice/config'
+
+# uid / gid
+templateservice_user_id: '{{ user_id }}'
+templateservice_group_id: '{{ group_id }}'
+
+# network
+templateservice_port: '8990'
+templateservice_hostname: 'templateservice'

@@ -1,0 +1,8 @@
+---
+librespeed_available_externally: 'false'
+librespeed_hostname: 'speedtest'
+librespeed_config_directory: '{{ docker_home }}/librespeed/config'
+librespeed_user_id: '{{ user_id }}'
+librespeed_group_id: '{{ group_id }}'
+
+librespeed_port_http: '7928'

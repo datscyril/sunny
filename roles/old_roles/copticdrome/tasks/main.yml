@@ -1,0 +1,26 @@
+---
+- name: Create copticdrome Directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ copticdrome_music_directory }}'
+
+- name: copticdrome Docker Container
+  docker_container:
+    name: copticdrome
+    image: deluan/navidrome:latest
+    pull: true
+    volumes:
+      - '{{ copticdrome_data_directory }}/data:/data:rw'
+      - '{{ copticdrome_music_directory }}:/music:rw'
+    ports:
+      - '{{ copticdrome_port }}:4533'
+    restart_policy: unless-stopped
+    labels:
+      traefik.enable: '{{ copticdrome_available_externally }}'
+      traefik.http.routers.copticdrome.rule: 'Host(`{ copticdrome_hostname }}.{{ domain }}`)'
+      traefik.http.routers.copticdrome.tls.certresolver: 'letsencrypt'
+      traefik.http.routers.copticdrome.tls.domains[0].main: '{{ domain }}'
+      traefik.http.routers.copticdrome.tls.domains[0].sans: '*.{{ domain }}'
+      traefik.http.services.copticdrome.loadbalancer.server.port: '4533'

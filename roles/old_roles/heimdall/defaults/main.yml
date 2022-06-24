@@ -1,0 +1,9 @@
+---
+heimdall_available_externally: 'false'
+heimdall_hostname: 'dashboard'
+heimdall_config_directory: '{{ docker_home }}/heimdall/config'
+heimdall_user_id: '{{ user_id }}'
+heimdall_group_id: '{{ group_id }}'
+
+heimdall_port_http: '8080'
+heimdall_port_https: '8097'

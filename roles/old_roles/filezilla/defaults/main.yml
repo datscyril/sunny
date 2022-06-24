@@ -1,0 +1,14 @@
+---
+filezilla_enabled: false
+filezilla_available_externally: 'false'
+
+# directories
+filezilla_data_directory: '{{ docker_home }}/filezilla'
+filezilla_storage_directory: '{{ samba_shares_root }}'
+
+# network
+filezilla_port: '5800'
+filezilla_hostname: 'filezilla'
+
+filezilla_user_id: '{{ user_id }}'
+filezilla_group_id: '{{ group_id }}'

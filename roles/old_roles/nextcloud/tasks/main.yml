@@ -1,0 +1,84 @@
+---
+- name: Create Nextcloud directories
+  file:
+    path: '{{ item }}'
+    state: directory
+    mode: 666
+  with_items:
+    - '{{ nextcloud_data_directory }}'
+    - '{{ nextcloud_db }}'
+    - '{{ nextcloud_redis }}'
+
+- name: Create a network
+  docker_network:
+    name: nexcloud
+
+- name: Nextcloud DB Docker Container
+  docker_container:
+    name: nextcloud-db
+    image: postgres
+    pull: true
+    volumes:
+      - '{{ nextcloud_db }}:/var/lib/postgresql/data:rw'
+    env:
+      POSTGRES_DB: 'nextcloud'
+      POSTGRES_USER: '{{ sql_user }}'
+      POSTGRES_PASSWORD: '{{ sql_password }}'
+    restart_policy: unless-stopped
+    networks:
+      - name: nextcloud
+
+- name: Nextcloud Redix Docker Container
+  docker_container:
+    name: nextcloud-redis
+    image: redis
+    pull: true
+    volumes:
+      - '{{ nextcloud_redis }}:/var/lib/redis:rw'
+    restart_policy: unless-stopped
+    networks:
+      - name: nextcloud
+
+- name: Sleep for 5 seconds and continue
+  wait_for:
+    timeout: 5
+
+- name: Nextcloud Docker Container
+  docker_container:
+    name: nextcloud
+    image: nextcloud
+    pull: true
+    links:
+      - nextcloud-db:nextcloud-db
+      - nextcloud-redis:nextcloud-redis
+    volumes:
+      - '{{ nextcloud_data_directory }}/nextcloud:/var/www/html:rw'
+    ports:
+      - '{{ nextcloud_port }}:80'
+    networks:
+      - name: nextcloud
+    env:
+      POSTGRES_HOST: 'nextcloud-db'
+      POSTGRES_DB: 'nextcloud'
+      POSTGRES_USER: '{{ sql_user }}'
+      POSTGRES_PASSWORD: '{{ sql_password }}'
+      NEXTCLOUD_PASSWORD: '{{ nextcloud_password }}'
+      NEXTCLOUD_USER: '{{ nextcloud_user }}'
+      NEXTCLOUD_TRUSTED_DOMAINS: '{{ nextcloud_domain }}'
+      REDIS_HOST: 'nextcloud-redis'
+    restart_policy: unless-stopped
+    labels:
+      traefik.enable: '{{ nextcloud_available_externally }}'
+      traefik.http.routers.nextcloud.rule: 'Host(`{{ nextcloud_domain }}`)'
+      traefik.http.routers.nextcloud.tls.certresolver: 'letsencrypt'
+      traefik.http.routers.nextcloud.tls.domains[0].main: '{{ domain }}'
+      traefik.http.routers.nextcloud.tls.domains[0].sans: '*.{{ domain }}'
+      traefik.http.services.nextcloud.loadbalancer.server.port: '80'
+      traefik.http.routers.nextcloud.middlewares: 'nextcloud,nextcloud_redirect'
+      traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue: sameorigin
+      traefik.http.middlewares.nextcloud.headers.contentSecurityPolicy: "frame-ancestors 'self' cghali.fr *.cghali.fr"
+      traefik.http.middlewares.nextcloud.headers.stsSeconds: '155520011'
+      traefik.http.middlewares.nextcloud.headers.stsIncludeSubdomains: 'true'
+      traefik.http.middlewares.nextcloud.headers.stsPreload: 'true'
+      traefik.http.middlewares.nextcloud_redirect.redirectregex.regex: '/.well-known/(card|cal)dav'
+      traefik.http.middlewares.nextcloud_redirect.redirectregex.replacement: '/remote.php/dav/'
