@@ -4,15 +4,14 @@
 
   pre_tasks:
     - import_tasks: tasks/users.yml
-      tags: users
+    - import_tasks: tasks/nfs.yml
 
   roles:
     - role: geerlingguy.docker
     - role: geerlingguy.security
-
-    ###
-    ### Ansible-NAS Roles
-    ###
+      ###
+      ### Ansible-NAS Roles
+      ###
     - role: ansible-nas-general
       tags:
         - ansible-nas-general
@@ -20,9 +19,6 @@
     - role: ansible-nas-docker
       tags:
         - ansible-nas-docker
-    ###
-    ### Applications
-    ###
 
     - role: bitwarden
       tags:
@@ -64,6 +60,21 @@
         - portainer
       when: (portainer_enabled | default(False))
 
+    - role: radarr
+      tags:
+        - radarr
+      when: (radarr_enabled | default(False))
+
+    - role: sonarr
+      tags:
+        - sonarr
+      when: (sonarr_enabled | default(False))
+
+    - role: sonarra
+      tags:
+        - sonarra
+      when: (sonarra_enabled | default(False))
+
     - role: sftp
       tags:
         - sftp
@@ -73,6 +84,7 @@
       tags:
         - traefik
       when: (traefik_enabled | default(False))
+
     - role: uptime-kuma
       tags:
         - uptime_kuma

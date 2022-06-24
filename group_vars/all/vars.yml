@@ -13,6 +13,9 @@ portainer_enabled: true
 traefik_enabled: true
 #filebrowser_enabled: true
 uptime_kuma_enabled: true
+radarr_enabled: true
+sonarr_enabled: true
+sonarra_enabled: true
 watchtower_enabled: true
 
 minecraft_available_externally: 'true'

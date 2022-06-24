@@ -21,6 +21,8 @@ traefik_environment_variables:
   CF_API_EMAIL: 'ghlcyril@gmail.com'
   CF_API_KEY: '{{ cloudflare_api_key }}'
 
+traefik_staging: "https://acme-staging-v02.api.letsencrypt.org/directory"
+traefik_production: "https://acme-v02.api.letsencrypt.org/directory"
 # find the relevant name and environment variables for your DNS provider at https://go-acme.github.io/lego/dns/
 
 # CF_API_EMAIL: "ghlcyril@gmail.com"
