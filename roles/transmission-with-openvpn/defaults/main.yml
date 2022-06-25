@@ -1,5 +1,5 @@
 transmission_openvpn_enabled: false # Please see docs about how to set VPN credentials
-transmission_openvpn_available_externally: 'false'
+transmission_openvpn_available_externally: 'true'
 
 # directories
 transmission_config_directory: '{{ docker_home }}/transmission/config'
@@ -18,7 +18,7 @@ transmission_openvpn_local_network: '192.168.0.0/24'
 transmission_openvpn_webui_port: '9091'
 transmission_openvpn_external_port: '51415'
 transmission_openvpn_proxy_port: '3128'
-transmission_openvpn_hostname: 'transmissionvpn'
+transmission_openvpn_hostname: 'transmission'
 # Transmission VPN Credentials
 # If you're using Transmission with a VPN, you'll need to set these credentials.
 # See https://github.com/haugene/docker-transmission-openvpn/ for supported VPN providers.

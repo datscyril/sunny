@@ -13,7 +13,14 @@ portainer_enabled: true
 traefik_enabled: true
   #filebrowser_enabled: true
 uptime_kuma_enabled: true
-
+transmission_enabled: true
+radarr_enabled: true
+flaresolverr_enabled: true
+jellyfin_enabled: true
+transmission_enable: true
+jackett_enabled: true
+sonarr_enabled: true
+sonarra_enabled: true
 watchtower_enabled: true
 
 minecraft_available_externally: 'true'
@@ -100,13 +107,5 @@ samba_shares:
   - name: comics
     path: '{{ comics_root }}'
 
-      # - name: coptic
-      #   comment: 'Coptic'
-      #   guest_ok: yes
-      #   public: yes
-      #   writable: yes
-      #   browseable: yes
-      #   path: '{{ coptic_root }}'
-
-traefik_ipwhitelist: '127.0.0.1/32, 192.168.1.7'
+traefik_ipwhitelist: "10.0.0.0/8, 192.168.0.0/16, 172.16.0.0/12"
 openvpn_provider: 'NORDVPN'

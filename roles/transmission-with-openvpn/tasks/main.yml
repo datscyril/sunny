@@ -42,7 +42,6 @@
       traefik.enable: '{{ transmission_openvpn_available_externally }}'
       traefik.http.routers.transmissionvpn.rule: 'Host(`{{ transmission_openvpn_hostname }}.{{ domain }}`)'
       traefik.http.routers.transmissionvpn.tls.certresolver: 'letsencrypt'
-      traefik.http.middlewares.transmissionvpn.ipwhitelist.sourcerange: '{{ traefik_ipwhitelist }}'
       traefik.http.routers.transmissionvpn.tls.domains[0].main: '{{ domain }}'
       traefik.http.routers.transmissionvpn.tls.domains[0].sans: '*.{{ domain }}'
       traefik.http.services.transmissionvpn.loadbalancer.server.port: '9091'

@@ -50,3 +50,8 @@
   when: docker_config.changed
   tags:
     - skip_ansible_lint
+
+- name: Create a network
+  docker_network:
+    name: starr
+

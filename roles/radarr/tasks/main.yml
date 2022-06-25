@@ -25,7 +25,6 @@
       traefik.enable: '{{ radarr_available_externally }}'
       traefik.http.routers.radarr.rule: 'Host(`{{ radarr_hostname }}.{{ domain }}`)'
       traefik.http.routers.radarr.tls.certresolver: 'letsencrypt'
-      traefik.http.middlewares.test-ipwhitelist.ipwhitelist.sourcerange: '{{ traefik_ipwhitelist }}'
       traefik.http.routers.radarr.tls.domains[0].main: '{{ domain }}'
       traefik.http.routers.radarr.tls.domains[0].sans: '*.{{ domain }}'
       traefik.http.services.radarr.loadbalancer.server.port: '7878'

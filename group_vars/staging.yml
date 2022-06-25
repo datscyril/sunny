@@ -1,1 +1,2 @@
+domain: getschwifty.fr
 traefik_acme_server: "{{ traefik_staging }}"

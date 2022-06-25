@@ -25,7 +25,6 @@
       traefik.enable: '{{ sonarr_available_externally }}'
       traefik.http.routers.sonarr.rule: 'Host(`{{ sonarr_hostname }}.{{ domain }}`)'
       traefik.http.routers.sonarr.tls.certresolver: 'letsencrypt'
-      traefik.http.middlewares.sonarr.ipwhitelist.sourcerange: '{{ traefik_ipwhitelist }}'
       traefik.http.routers.sonarr.tls.domains[0].main: '{{ domain }}'
       traefik.http.routers.sonarr.tls.domains[0].sans: '*.{{ domain }}'
       traefik.http.services.sonarr.loadbalancer.server.port: '8989'

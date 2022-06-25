@@ -1,0 +1,16 @@
+--
+recyclarr_enabled: false
+recyclarr_available_externally: 'false'
+
+# directories
+recyclarr_movies_directory: '{{ movies_root }}'
+recyclarr_download_directory: '{{ downloads_root }}'
+recyclarr_data_directory: '{{ docker_home }}/recyclarr'
+
+# uid / gid
+recyclarr_user_id: '{{ user_id }}'
+recyclarr_group_id: '{{ group_id }}'
+
+# network
+recyclarr_port: '7878'
+recyclarr_hostname: 'recyclarr'
