@@ -9,6 +9,8 @@
       - '{{ transmission_config_directory }}:/config:rw'
       - '{{ transmission_watch_directory }}:/watch:rw'
       - '/etc/timezone:/etc/timezone:ro'
+    networks:
+      - name: starr 
     ports:
       - '{{ transmission_openvpn_webui_port }}:9091'
       - '{{ transmission_openvpn_external_port }}:51413'

@@ -6,9 +6,15 @@
     - import_tasks: tasks/users.yml
     - import_tasks: tasks/nfs.yml
 
+  vars:
+    pip_install_packages:
+      - name: docker
+      - name: docker-compose
+
   roles:
     - role: geerlingguy.docker
     - role: geerlingguy.security
+    - role: geerlingguy.pip
       ###
       ### Ansible-NAS Roles
       ###
@@ -99,7 +105,6 @@
       tags:
         - transmission
       when: (transmission_enabled | default(False))
-
 
     - role: uptime-kuma
       tags:

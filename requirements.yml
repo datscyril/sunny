@@ -5,3 +5,4 @@
 - name: geerlingguy.security
   version: 2.1.0
 
+- name: geerlingguy.pip

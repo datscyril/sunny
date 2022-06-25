@@ -14,6 +14,8 @@
     volumes:
       - '{{ samba_shares_root }}:/public:rw'
       - '{{ sonarra_data_directory }}:/config:rw'
+    networks:
+      - name: starr 
     ports:
       - '{{ sonarra_port }}:8989'
     env:

@@ -12,6 +12,8 @@
     image: hotio/jackett
     volumes:
       - '{{ jackett_data_directory }}:/config:rw'
+    networks:
+      - name: starr 
     ports:
       - '{{ jackett_port }}:9117'
     env:

@@ -14,6 +14,8 @@
     volumes:
       - '{{ samba_shares_root }}:/public:rw'
       - '{{ radarr_data_directory }}:/config:rw'
+    networks:
+      - name: starr 
     ports:
       - '{{ radarr_port }}:7878'
     env:

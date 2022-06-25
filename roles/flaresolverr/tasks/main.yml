@@ -8,6 +8,8 @@
       LOG_LEVEL: '{{ flaresolverr_log_level }}'
       LOG_HTML: '{{ flaresolverr_log_html }}'
       CAPTACHA_SOLVER: '{{ flaresolverr_captcha }}'
+    networks:
+      - name: starr     
     ports:
       - '{{ flaresolverr_port }}:8191'
     restart_policy: unless-stopped

@@ -8,17 +8,17 @@ packages:
 hostname: nasa
 timezone: Europe/Paris
 
-  # services
+# services
 portainer_enabled: true
 traefik_enabled: true
-  #filebrowser_enabled: true
 uptime_kuma_enabled: true
 transmission_enabled: true
-radarr_enabled: true
 flaresolverr_enabled: true
 jellyfin_enabled: true
 transmission_enable: true
 jackett_enabled: true
+radarr_enabled: true
+recyclarr_enabled: true
 sonarr_enabled: true
 sonarra_enabled: true
 watchtower_enabled: true
@@ -43,8 +43,7 @@ personal_group_id: '1000'
 
 user: luffy
 ansible_user: luffy
-security_sudoers_passwordless: 
-  - luffy
+security_sudoers_passwordless: [luffy]
 group: luffy
 email: ghlcyril@gmail.com
 domain: cghali.fr
