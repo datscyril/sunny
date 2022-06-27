@@ -1,0 +1,38 @@
+---
+- name: Create NZBget Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ nzbget_data_directory }}"
+    - "{{ nzbget_data_directory }}/logs"
+    - "{{ nzbget_data_directory }}/scripts"
+
+- name: Copy scripts for NZB
+  synchronize:
+    src: "../files/"
+    dest: "{{ nzbget_data_directory }}/scripts"
+
+- name: NZBGet
+  docker_container:
+    name: nzbget
+    image: cr.hotio.dev/hotio/nzbget
+    pull: true
+    networks:
+      - name: starr
+    volumes:
+      - "{{ nzbget_public_directory }}:/public:rw"
+      - "{{ nzbget_data_directory }}:/config:rw"
+    ports:
+      - "{{ nzbget_port }}:6789"
+    env:
+      TZ: "{{ timezone }}"
+      PUID: "{{ nzbget_user_id }}"
+      PGID: "{{ nzbget_group_id }}"
+    labels:
+      traefik.enable: "{{ nzbget_available_externally }}"
+      traefik.http.routers.nzbget.rule: "Host(`{{ nzbget_hostname }}.{{ domain }}`)"
+      traefik.http.routers.nzbget.tls.certresolver: "letsencrypt"
+      traefik.http.routers.nzbget.tls.domains[0].main: "{{ domain }}"
+      traefik.http.routers.nzbget.tls.domains[0].sans: "*.{{ domain }}"
+      traefik.http.services.nzbget.loadbalancer.server.port: "6789"

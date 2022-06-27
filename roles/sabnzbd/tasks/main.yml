@@ -1,0 +1,40 @@
+---
+- name: Create NZBget Directories
+  file:
+    path: "{{ item }}"
+    owner: "{{ user }}"
+    state: directory
+  with_items:
+    - "{{ sabnzbd_data_directory }}"
+    - "{{ sabnzbd_data_directory }}/logs"
+    - "{{ sabnzbd_data_directory }}/scripts"
+
+- name: Copy scripts for NZB
+  synchronize:
+    src: "../files/"
+    dest: "{{ sabnzbd_data_directory }}/scripts"
+
+- name: NZBGet
+  docker_container:
+    name: sabnzbd
+    image: cr.hotio.dev/hotio/sabnzbd
+    pull: true
+    networks:
+      - name: starr
+    volumes:
+      - "{{ sabnzbd_public_directory }}:/public:rw"
+      - "{{ sabnzbd_data_directory }}:/config:rw"
+    ports:
+      - "{{ sabnzbd_port }}:8080"
+    env:
+      TZ: "{{ timezone }}"
+      PUID: "{{ sabnzbd_user_id }}"
+      host_whitelist: "local.nas"
+      PGID: "{{ sabnzbd_group_id }}"
+    labels:
+      traefik.enable: "{{ sabnzbd_available_externally }}"
+      traefik.http.routers.sabnzbd.rule: "Host(`{{ sabnzbd_hostname }}.{{ domain }}`)"
+      traefik.http.routers.sabnzbd.tls.certresolver: "letsencrypt"
+      traefik.http.routers.sabnzbd.tls.domains[0].main: "{{ domain }}"
+      traefik.http.routers.sabnzbd.tls.domains[0].sans: "*.{{ domain }}"
+      traefik.http.services.sabnzbd.loadbalancer.server.port: "8080"

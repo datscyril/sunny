@@ -1,0 +1,15 @@
+---
+sabnzbd_enabled: false
+sabnzbd_available_externally: "false"
+
+# directories
+sabnzbd_data_directory: "{{ docker_home }}/sabnzbd"
+sabnzbd_public_directory: "{{ samba_shares_root }}"
+
+# uid / gid
+sabnzbd_user_id: "{{ user_id }}"
+sabnzbd_group_id: "{{ group_id }}"
+
+# network
+sabnzbd_port: "8089"
+sabnzbd_hostname: "sabnzbd"

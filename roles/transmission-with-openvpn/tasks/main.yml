@@ -1,4 +1,15 @@
+- name: Transmission directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    mode: 0777 
+  loop:
+    -  "{{ samba_shares_root }}/downloads/movies"
+    -  "{{ samba_shares_root }}/downloads/anime"
+    -  "{{ samba_shares_root }}/downloads/tv"
+
 - name: Transmission with VPN
+  become: yes
   docker_container:
     name: transmission-openvpn
     image: haugene/transmission-openvpn

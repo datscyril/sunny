@@ -1,0 +1,15 @@
+---
+nzbget_enabled: false
+nzbget_available_externally: "false"
+
+# directories
+nzbget_data_directory: "{{ docker_home }}/nzbget"
+nzbget_public_directory: "{{ samba_shares_root }}"
+
+# uid / gid
+nzbget_user_id: "{{ user_id }}"
+nzbget_group_id: "{{ group_id }}"
+
+# network
+nzbget_port: "6789"
+nzbget_hostname: "nzbget"

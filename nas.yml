@@ -5,6 +5,8 @@
   pre_tasks:
     - import_tasks: tasks/users.yml
     - import_tasks: tasks/nfs.yml
+      tags: 
+        - nfs
 
   vars:
     pip_install_packages:
@@ -13,11 +15,11 @@
 
   roles:
     - role: geerlingguy.docker
+      tags:
+        - docker
     - role: geerlingguy.security
     - role: geerlingguy.pip
-      ###
-      ### Ansible-NAS Roles
-      ###
+
     - role: ansible-nas-general
       tags:
         - ansible-nas-general
@@ -30,6 +32,17 @@
       tags:
         - bitwarden
       when: (bitwarden_enabled | default(False))
+
+    - role: bazarr
+      tags:
+        - bazarr
+      when: (bazarr_enabled | default(False))
+
+
+    - role: flaresolverr
+      tags:
+        - flaresolverr
+      when: (flaresolverr_enabled | default(False))
 
     - role: filebrowser
       tags:
@@ -66,6 +79,11 @@
         - navidrome
       when: (navidrome_enabled | default(False))
 
+    - role: nzbget
+      tags:
+        - nzbget
+      when: (nzbget_enabled | default(False))
+
     - role: librespeed
       tags:
         - librespeed
@@ -75,6 +93,11 @@
       tags:
         - portainer
       when: (portainer_enabled | default(False))
+
+    - role: prowlarr
+      tags:
+        - prowlarr
+      when: (prowlarr_enabled | default(False))
 
     - role: radarr
       tags:
@@ -90,6 +113,11 @@
       tags:
         - sonarra
       when: (sonarra_enabled | default(False))
+
+    - role: sabnzbd
+      tags:
+        - sabnzbd
+      when: (sabnzbd_enabled | default(False))
 
     - role: sftp
       tags:

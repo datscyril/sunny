@@ -1,0 +1,31 @@
+---
+- name: Create Prowlarr Directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ prowlarr_data_directory }}'
+
+- name: prowlarr
+  docker_container:
+    name: prowlarr
+    image: ghcr.io/linuxserver/prowlarr:develop
+    pull: true
+    networks: 
+      - name: starr
+    volumes:
+      - '{{ prowlarr_data_directory }}:/config:rw'
+    ports:
+      - '{{ prowlarr_port }}:9696'
+    env:
+      TZ: '{{ timezone }}'
+      PUID: '{{ prowlarr_user_id }}'
+      PGID: '{{ prowlarr_group_id }}'
+    restart_policy: unless-stopped
+    labels:
+      traefik.enable: '{{ prowlarr_available_externally }}'
+      traefik.http.routers.prowlarr.rule: 'Host(`{{ prowlarr_hostname }}.{{ domain }}`)'
+      traefik.http.routers.prowlarr.tls.certresolver: 'letsencrypt'
+      traefik.http.routers.prowlarr.tls.domains[0].main: '{{ domain }}'
+      traefik.http.routers.prowlarr.tls.domains[0].sans: '*.{{ domain }}'
+      traefik.http.services.prowlarr.loadbalancer.server.port: '9696'

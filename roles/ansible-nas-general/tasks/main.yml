@@ -36,6 +36,6 @@
     state: directory
     owner: '{{ user }}'
     group: '{{ group }}'
-    mode: 'u=rwX,g=rwX,o=rX'
+    mode: 'u=rwX,g=rwX,o=rwX'
     recurse: true
   loop: '{{ samba_shares }}'

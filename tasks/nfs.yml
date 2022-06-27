@@ -4,7 +4,7 @@
 
 - name: Mount an NFS volume
   ansible.posix.mount:
-    src: 192.168.1.162:/mnt/public
+    src: 192.168.1.162:/mnt/zfs/public
     path: "{{ samba_shares_root }}"
     opts: rw,sync,hard
     state: mounted
