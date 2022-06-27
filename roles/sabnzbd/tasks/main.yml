@@ -8,6 +8,10 @@
     - "{{ sabnzbd_data_directory }}"
     - "{{ sabnzbd_data_directory }}/logs"
     - "{{ sabnzbd_data_directory }}/scripts"
+    -  "{{ samba_shares_root }}/downloads/usenet/movies"
+    -  "{{ samba_shares_root }}/downloads/usenet/anime"
+    -  "{{ samba_shares_root }}/downloads/usenet/tv"
+
 
 - name: Copy scripts for NZB
   synchronize:

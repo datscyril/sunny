@@ -3,10 +3,10 @@
     name: "{{ item }}"
     state: directory
     mode: 0777 
-  loop:
-    -  "{{ samba_shares_root }}/downloads/movies"
-    -  "{{ samba_shares_root }}/downloads/anime"
-    -  "{{ samba_shares_root }}/downloads/tv"
+  with_items:
+    -  "{{ samba_shares_root }}/downloads/torrents/movies"
+    -  "{{ samba_shares_root }}/downloads/torrents/anime"
+    -  "{{ samba_shares_root }}/downloads/torrents/tv"
 
 - name: Transmission with VPN
   become: yes
@@ -29,7 +29,7 @@
       - '{{ transmission_openvpn_proxy_port }}:3128'
     env:
       TRANSMISSION_HOME: '/config'
-      TRANSMISSION_DOWNLOAD_DIR: '/public/downloads'
+      TRANSMISSION_DOWNLOAD_DIR: '/public/downloads/torrents'
       TRANSMISSION_INCOMPLETE_DIR: '/public/downloads/temp'
       TRANSMISSION_WATCH_DIR: '/watch'
       TRANSMISSION_RATIO_LIMIT: '{{ transmission_openvpn_ratio_limit }}'
