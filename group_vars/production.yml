@@ -1,2 +1,2 @@
 traefik_acme_server: "{{ traefik_production }}"
-nfs_enabled: true
+nfs_enabled: false

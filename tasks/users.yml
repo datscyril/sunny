@@ -3,16 +3,6 @@
   apt:
     name: fish
 
-- name: Install conjure-up for Canonical Kubernetes
-  snap:
-    name: nvim
-    classic: yes
-
-- name: Clone AstroNvim 
-  ansible.builtin.git:
-    repo: https://github.com/AstroNvim/AstroNvim
-    dest: /home/luffy/.config/nvim
-
 - name: Create luffy group
   group:
     name: luffy

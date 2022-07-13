@@ -18,7 +18,7 @@ traefik_docker_image: traefik:latest
 traefik_log_level: 'INFO'
 traefik_dns_provider: cloudflare
 traefik_environment_variables:
-  CF_API_EMAIL: 'ghlcyril@gmail.com'
+  CF_API_EMAIL: '{{ email }}'
   CF_API_KEY: '{{ cloudflare_api_key }}'
 
 traefik_staging: "https://acme-staging-v02.api.letsencrypt.org/directory"

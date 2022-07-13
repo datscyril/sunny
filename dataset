@@ -1,0 +1,30 @@
+zfs create tank/public/movies
+zfs set recordsize=1M tank/public/movies
+zfs set compression=off tank/public/movies
+zfs set exec=off tank/public/movies
+
+zfs create tank/public/tv
+zfs set recordsize=1M tank/public/tv
+zfs set compression=off tank/public/tv
+zfs set exec=off tank/public/tv
+
+zfs create tank/public/anime
+zfs set recordsize=1M tank/public/anime
+zfs set compression=off tank/public/anime
+zfs set exec=off tank/public/anime
+
+
+zfs create tank/public/documents
+zfs set recordsize=1M tank/public/documents
+zfs set compression=off tank/public/documents
+zfs set exec=off tank/public/documents
+
+zfs create tank/public/books
+zfs set recordsize=1M tank/public/books
+zfs set compression=off tank/public/books
+zfs set exec=off tank/public/books
+
+zfs create tank/public/downloads
+zfs set exec=off tank/public/downloads
+
+

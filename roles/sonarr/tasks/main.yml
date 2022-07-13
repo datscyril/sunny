@@ -22,6 +22,7 @@
       TZ: '{{ timezone }}'
       PUID: '{{ sonarr_user_id }}'
       PGID: '{{ sonarr_group_id }}'
+      UMASK: '002'
     restart_policy: unless-stopped
     labels:
       traefik.enable: '{{ sonarr_available_externally }}'

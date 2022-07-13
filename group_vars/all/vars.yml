@@ -10,22 +10,15 @@ timezone: Europe/Paris
 
 # services
 
-bazarr_enabled: true
-flaresolverr_enabled: true
 jackett_enabled: true
+sabnzbd_enabled: true
 jellyfin_enabled: true
-nzbget_enabled: true
 portainer_enabled: true
 prowlarr_enabled: true
 radarr_enabled: true
-sonarra_enabled: true
-recyclarr_enabled: true
 sonarr_enabled: true
-sabnzbd_enabled: true
 traefik_enabled: true
-transmission_enable: true
 transmission_enabled: true
-uptime_kuma_enabled: true
 watchtower_enabled: true
 
 minecraft_available_externally: 'true'
@@ -35,10 +28,9 @@ librespeed_available_externally: 'true'
 portainer_available_externally: 'true'
 jellyfin_available_externally: 'true'
 filebrowser_available_externally: 'true'
-nextcloud_available_externally: 'true'
 bitwarden_available_externally: 'true'
 
-root_directory: /srv
+root_directory: /tank
 
 personal_user: luffy
 personal_group: luffy
@@ -50,7 +42,7 @@ user: luffy
 ansible_user: luffy
 security_sudoers_passwordless: [luffy]
 group: luffy
-email: ghlcyril@gmail.com
+email: cyril.ghali@hotmail.com
 domain: cghali.fr
 user_id: '1000'
 group_id: '1000'
@@ -65,10 +57,8 @@ anime_root: '{{ samba_shares_root }}/anime'
 tv_root: '{{ samba_shares_root }}/tv'
 music_root: '{{ samba_shares_root }}/music'
 videos_root: '{{ samba_shares_root }}/videos'
-coptic_root: '{{ samba_shares_root }}/coptic'
 podcasts_root: '{{ samba_shares_root }}/podcasts'
 books_root: '{{ samba_shares_root }}/books'
-audiobooks_root: '{{ samba_shares_root }}/audiobooks'
 comics_root: '{{ samba_shares_root }}/comics'
 photos_root: '{{ samba_shares_root }}/photos'
 samba_shares:
@@ -87,29 +77,8 @@ samba_shares:
   - name: anime
     path: '{{ anime_root }}'
 
-  - name: music
-    path: '{{ music_root }}'
-
-  - name: podcasts
-    path: '{{ podcasts_root }}'
-
-  - name: dump
-    path: '{{  samba_shares_root  }}/dump'
-
-  - name: games
-    path: '{{ samba_shares_root }}/games'
-
-  - name: photos
-    path: '{{ photos_root }}'
-
   - name: books
     path: '{{ books_root }}'
-
-  - name: audiobooks
-    path: '{{ samba_shares_root }}/audiobooks'
-
-  - name: comics
-    path: '{{ comics_root }}'
 
 traefik_ipwhitelist: "10.0.0.0/8, 192.168.0.0/16, 172.16.0.0/12"
 openvpn_provider: 'NORDVPN'
